@@ -1,0 +1,79 @@
+{
+  "name": "@mot-platform/affiliate-api",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "webpack-cli build",
+          "args": [
+            "node-env=production"
+          ]
+        },
+        "configurations": {
+          "development": {
+            "args": [
+              "node-env=development"
+            ]
+          }
+        }
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "@mot-platform/affiliate-api:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "@mot-platform/affiliate-api:build:development"
+          },
+          "production": {
+            "buildTarget": "@mot-platform/affiliate-api:build:production"
+          }
+        }
+      },
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@nestjs/cache-manager": "^3.0.1",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/passport": "^11.0.5",
+    "@nestjs/swagger": "^11.2.1",
+    "@nestjs/typeorm": "^11.0.0",
+    "@privy-io/server-auth": "^1.32.5",
+    "cache-manager": "^6.1.0",
+    "@keyv/redis": "^3.0.1",
+    "keyv": "^5.1.0",
+    "class-transformer": "~0.4.1",
+    "class-validator": "~0.14.2",
+    "ioredis": "^5.8.1",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3",
+    "swagger-ui-express": "^5.0.1",
+    "typeorm": "0.3.27",
+    "typeorm-naming-strategies": "^4.1.0"
+  },
+  "scripts": {
+    "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create ./src/migrations/$npm_config_name",
+    "migration:run": "npm run typeorm -- migration:run"
+  },
+  "devDependencies": {
+    "@types/swagger-ui-express": "^4.1.8",
+    "dotenv": "^16.3.1",
+    "knex": "^2.5.1",
+    "mysql2": "^3.3.0"
+  }
+}
